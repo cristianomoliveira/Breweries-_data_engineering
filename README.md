@@ -10,8 +10,9 @@
 6. [Linking Storage Accounts to Data Factory](#linking-storage-accounts-to-data-factory) 
 7. [Creating Data Sets ](#creating-data-sets )
 8. [Copy With Data Factory ](#copy-with-data-factory)
-9. [Notes](#notes) 
-10. [Further Information](#further-information) 
+9. [Setting Up Trigger for Automated Copy ](#setting-up-trigger-for-automated-copy)
+10. [Notes](#notes) 
+11. [Further Information](#further-information) 
  
 ## Introduction 
  
