@@ -8,8 +8,10 @@
 4. [Get and Send Files](#get-and-send-files) 
 5. [Creating a Data Factory](#creating-a-data-factory) 
 6. [Linking Storage Accounts to Data Factory](#linking-storage-accounts-to-data-factory) 
-7. [Notes](#notes) 
-8. [Further Information](#further-information) 
+7. [Creating Data Sets ](#creating-data-sets )
+8. [Copy With Data Factory ](#copy-with-data-factory)
+9. [Notes](#notes) 
+10. [Further Information](#further-information) 
  
 ## Introduction 
  
@@ -164,6 +166,69 @@ partitioned by location, and an analytical aggregated layer.
  
 10. You now have both Storage Accounts linked to your Data Factory and can use them in your data pipelines. 
  
+## Creating Data Sets 
+ 
+1. In the Azure Data Factory Studio, click on "Author" in the left sidebar. 
+ 
+2. Under the "Factory Resources" pane, click the "+" button and select "Dataset". 
+ 
+3. In the "New dataset" window, choose the data store type. For Azure Storage Account, you can select "Azure Blob Storage". 
+
+ 
+4. Configure the dataset: 
+   - Name: Give your dataset a descriptive name. Example: "ds-src-project-bees" 
+   - Linked service: Select the linked service you created before for Blob Storage. 
+   - File path: Specify the container and path to your data. Select the file "breweries.csv". 
+   - File format: Choose the appropriate format (DelimitedText). 
+ 
+5. Click "OK" to create the dataset. 
+ 
+6. Click "Publish All" at the top of the page to save your changes. 
+ 
+7. Repeat steps 2-6 to create additional dataset as needed, , one for the destination, using "Azure Data Lake Storage Gen 2" for data store type,  in Linked service: Select the linked service you created before for Data Lake. In File path: Specify the container and path to save your data. Select the directory "Bronze". 
+
+## Copy With Data Factory
+
+1. In the Azure Data Factory Studio, click on "Author" in the left sidebar. 
+2. Under the "Factory Resources" pane, click the "+" button and select "Pipeline". 
+3. Give your pipeline a descriptive name. Example: "data-ingestion-project-bees" . 
+4. In the pipeline canvas, drag and drop a "Copy Data" activity from the "Move & Transform" section. 
+ 
+5. In the "Source" tab of the Copy Data activity: 
+   - Source dataset: Select your Blob Storage dataset. 
+ 
+6. In the "Sink" tab: 
+   - Sink dataset: Select your Data Lake dataset. 
+   - File Extension: .csv
+
+8. Click "Validate" to validate your pipeline.  
+9. Click "Publish All" to save your pipeline. 
+
+ 
+## Setting Up Trigger for Automated Copy 
+ 
+1. In your pipeline canvas, click "Add trigger" and then "New/Edit". 
+ 
+2. In the "Add triggers" window, click "New". 
+ 
+3. Configure your trigger: 
+   - Name: Give your trigger a name. 
+   - Type: Select "Event". 
+   - Azure subscription: Choose your subscription. 
+   - Storage account name: Select your Blob Storage account. 
+   - Container name: Choose the container with your source data. 
+ 
+4. Under "Blob path begins with", enter the path where changes should trigger the pipeline. 
+ 
+5. Under "Blob path ends with", enter a file extension if applicable (e.g., `.csv`). 
+ 
+6. Choose the events that should trigger the pipeline (e.g., "Blob created"). 
+ 
+7. Click "OK" to create the trigger. 
+ 
+8. Click "Publish All" to save your changes. 
+ 
+
 ## Notes 
  
 - Enabling hierarchical namespace (Data Lake Storage Gen2) must be done during Storage Account creation. It cannot be changed later. 
@@ -172,6 +237,13 @@ partitioned by location, and an analytical aggregated layer.
 - It's a best practice to organize your Azure resources into Resource Groups for easier management and organization. 
 - Linked services in Data Factory define the connection information to data stores and compute resources. 
 - Data Factory allows you to create data pipelines to move and transform data between different data stores. 
+- Datasets in Azure Data Factory represent data structures within data stores, pointing to or referencing the data you want to use in your activities as inputs and outputs. 
+- When creating datasets, ensure that the file paths and formats accurately reflect your data structure in the Storage Accounts. 
+- Event-based triggers in Azure Data Factory allow for near real-time data processing. 
+- Ensure that the service principal for your Data Factory has the necessary permissions on both the Blob Storage and Data Lake. 
+- Consider implementing error handling and logging in your pipeline for production scenarios. 
+
+
 
 
 ## Further Information 
@@ -183,6 +255,10 @@ For more information, refer to the official Azure documentation:
 - [Use Data Lake Storage Gen2](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) 
 - [Create a Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/quickstart-create-data-factory-portal) 
 - [Create linked services in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/quickstart-create-data-factory-portal#create-a-linked-service) 
+- [Create datasets in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/concepts-datasets-linked-services) 
+- [Copy activity in Azure Data Factory](https://docs.microsoft.com/en-us/azure/data-factory/copy-activity-overview) 
+- [Trigger pipelines on storage events](https://docs.microsoft.com/en-us/azure/data-factory/how-to-create-event-trigger) 
+
 
 
 
