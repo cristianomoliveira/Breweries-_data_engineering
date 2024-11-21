@@ -18,7 +18,7 @@ partitioned by location, and an analytical aggregated layer.
 ###  Architecture
 
 
-<img src="\src\img\Architecture.png" alt="Architecture">
+<img src="https://github.com/cristianomoliveira/Breweries-_data_engineering/blob/main/src/architecture.png" alt="Architecture">
 
 ## Creating a Resource Group 
  
